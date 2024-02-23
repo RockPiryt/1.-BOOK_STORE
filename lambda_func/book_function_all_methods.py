@@ -39,14 +39,14 @@ def lambda_handler(event, context):
     # print("Received event: " + json.dumps(event, indent=2))
 
     err = None
-    # /books List all books
+    # GET /books List all books
     response_body = {}
     if (resource == "/books"):
         response_body = {
             "success": True,
             "books": BOOKS
         }
-    # /books/bookId find book by Id    
+    # GET /books/bookId find book by Id    
     elif (resource == "/books/{id}"):
         bookId = event['pathParameters']['id']
         value = next((item for item in BOOKS if item["id"] == str(bookId)), False)
@@ -57,9 +57,12 @@ def lambda_handler(event, context):
                 "success": True,
                 "book": value
             }
-    # /books create new book
+    # POST /books create new book
     elif (resource == "/books"):
-        pass
+        response_body = {
+            "success": True,
+            "books": BOOKS
+        }
     response =  response_payload(err, response_body)
 
     return response
